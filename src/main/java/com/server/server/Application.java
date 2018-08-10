@@ -1,7 +1,7 @@
 package com.server.server;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -13,15 +13,15 @@ import java.util.Collections;
 @SpringBootApplication
 public class Application {
 
-    private static Logger mLog = LogManager.getLogger(Application.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Application.class);
 
     public static void main(String[] args) {
 
         SpringApplication application = new SpringApplication(Application.class);
         application.setDefaultProperties(Collections.singletonMap("server.port", "8083"));
-        mLog.debug("---> [Set server.port: 8083]");
+        LOG.info("[INFO] ---> [Set server.port: 8083]");
         application.run(args);
-        mLog.debug("---> [Application is running]");
+        LOG.info("[INFO] ---> [Application is running]");
 
 //        SpringApplication.run(Application.class, args);
     }
