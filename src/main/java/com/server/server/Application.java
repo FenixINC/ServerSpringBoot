@@ -5,8 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.Collections;
-
 /**
  * Created by Taras Koloshmatin on 09.08.2018
  */
@@ -17,13 +15,12 @@ public class Application {
 
     public static void main(String[] args) {
 
-        SpringApplication application = new SpringApplication(Application.class);
-        application.setDefaultProperties(Collections.singletonMap("server.port", "8083"));
-        LOG.info("[INFO] ---> [Set server.port: 8083]");
-        application.run(args);
-        LOG.info("[INFO] ---> [Application is running]");
+//        SpringApplication application = new SpringApplication(Application.class);
+//        application.setDefaultProperties(Collections.singletonMap("server.port", "8083"));
+//        LOG.info("[INFO] ---> [Set server.port: 8083]");
+//        application.run(args);
+//        LOG.info("[INFO] ---> [Application is running]");
 
-//        SpringApplication.run(Application.class, args);
+        SpringApplication.run(Application.class, args);
     }
 }
-
