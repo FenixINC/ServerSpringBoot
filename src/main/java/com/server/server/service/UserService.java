@@ -9,5 +9,9 @@ public interface UserService {
 
     User createUser(User user);
 
-    boolean isUserExist(String username, String password);
+    User findUserByUsername(String username);
+
+    User findUserByPasswordHash(String passwordHash);
+
+//    boolean findAllByUsernamePassword(String username, String passwordHash);
 }

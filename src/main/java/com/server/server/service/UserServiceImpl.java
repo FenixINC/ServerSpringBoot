@@ -8,19 +8,29 @@ import org.springframework.stereotype.Service;
 /**
  * Created by Taras Koloshmatin on 14.08.2018
  */
-//@Service
-public class UserServiceImpl /*implements UserService*/ {
+@Service
+public class UserServiceImpl implements UserService {
 
-//    @Autowired
-//    private UserRepository repository;
-//
+    @Autowired
+    private UserRepository repository;
+
+    @Override
+    public User createUser(User user) {
+        return repository.saveAndFlush(user);
+    }
+
+    @Override
+    public User findUserByUsername(String username) {
+        return repository.findUserByUsername(username);
+    }
+
+    @Override
+    public User findUserByPasswordHash(String passwordHash) {
+        return repository.findUserByPasswordHash(passwordHash);
+    }
+
 //    @Override
-//    public User createUser(User user) {
-//        return repository.saveAndFlush(user);
-//    }
-//
-//    @Override
-//    public boolean isUserExist(String username, String password) {
-//        return repository.isExists(username, password);
+//    public boolean findAllByUsernamePassword(String username, String passwordHash) {
+//        return repository.findAllByUsernamePassword(username, passwordHash);
 //    }
 }

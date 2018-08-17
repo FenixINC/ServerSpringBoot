@@ -11,6 +11,14 @@ public class Login {
     public Login() {
     }
 
+    @Override
+    public String toString() {
+        return "Login{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }
