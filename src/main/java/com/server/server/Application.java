@@ -22,5 +22,6 @@ public class Application {
 //        LOG.info("[INFO] ---> [Application is running]");
 
         SpringApplication.run(Application.class, args);
+        LOG.info("[INFO] ---> [Application is running, " + "port: 8080]");
     }
 }

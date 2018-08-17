@@ -41,7 +41,7 @@ public class ReminderController {
         return service.getListByType(typeRemind);
     }
 
-    @RequestMapping(value = "/create", method = POST)
+    @RequestMapping(value = "/createReminder", method = POST)
     @ResponseBody
     public Remind createReminder(@RequestBody Remind remind) {
         LOG.info("[INFO]---> [createReminder: " + remind.toString() + "]");
