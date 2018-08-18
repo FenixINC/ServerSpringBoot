@@ -57,7 +57,7 @@ public class UserController {
     }
 
     private boolean isUserExist(String username, String passwordHash) {
-        User user = mService.findUser(username, passwordHash);
+        User user = mService.findUserByUsername(username);
         if (user != null) {
             return true;
         } else {
