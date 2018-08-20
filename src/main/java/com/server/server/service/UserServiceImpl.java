@@ -15,22 +15,12 @@ public class UserServiceImpl implements UserService {
     private UserRepository repository;
 
     @Override
-    public User createUser(User user) {
-        return repository.saveAndFlush(user);
+    public void createUser(User user) {
+        repository.saveAndFlush(user);
     }
 
     @Override
-    public User findUserByUsername(String username) {
-        return repository.findUserByUsername(username);
+    public User findUser(String username) {
+        return repository.findUser(username);
     }
-
-    @Override
-    public User findUserByPasswordHash(String passwordHash) {
-        return repository.findUserByPasswordHash(passwordHash);
-    }
-
-//    @Override
-//    public boolean findAllByUsernamePassword(String username, String passwordHash) {
-//        return repository.findAllByUsernamePassword(username, passwordHash);
-//    }
 }

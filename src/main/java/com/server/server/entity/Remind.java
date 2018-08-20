@@ -1,11 +1,13 @@
 package com.server.server.entity;
 
+import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
+@Data
 @Entity
-@Table(name = "remind")
+@Table(name = "tbl_remind", schema = "myapp")
 public class Remind {
 
     @Id
@@ -22,60 +24,6 @@ public class Remind {
     @Column(name = "description", length = 1024)
     private String description;
 
-    @Override
-    public String toString() {
-        return "Remind{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", remindDate='" + remindDate + '\'' +
-                ", description='" + description + '\'' +
-                ", typeRemind='" + typeRemind + '\'' +
-                '}';
-    }
-
     @Column(name = "type_remind")
     private String typeRemind;
-
-    public Remind() {
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getRemindDate() {
-        return remindDate;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getTypeRemind() {
-        return typeRemind;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setRemindDate(String remindDate) {
-        this.remindDate = remindDate;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setTypeRemind(String typeRemind) {
-        this.typeRemind = typeRemind;
-    }
 }

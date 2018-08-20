@@ -32,35 +32,38 @@ public class UserController {
     @RequestMapping(value = "/create-user", method = POST)
     @ResponseBody
     public String createUser(@RequestBody Login login) {
+        String result = "false";
         String username = login.getUsername();
         String password = login.getPassword();
-        User user = new User();
+        User newUser = new User();
         byte[] salt;
 
         try {
             //TODO: implement check login user by username, password
-//            if (!isUserExist(username, password)) {
+
+//            if (isUserExist(username, password)) {
                 salt = HashMD5.getSalt();
-                user.setUsername(username);
-                user.setUserSalt(String.valueOf(salt));
-                user.setPasswordHash(HashMD5.getSecurePassword(password, salt));
-                mService.createUser(user);
+                newUser.setUsername(username);
+                newUser.setUserSalt(String.valueOf(salt));
+                newUser.setPasswordHash(HashMD5.getSecurePassword(password, salt));
+                mService.createUser(newUser);
 //            }
         } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
             LOG.error("[ERROR] ---> [" + e.getMessage() + "]");
         }
         LOG.info("[INFO] ---> [" + login.toString() + "]");
-        LOG.info("[INFO] ---> [create new user: " + user.toString() + "]");
-//        mService.createUser(user);
+        LOG.info("[INFO] ---> [create new user: " + newUser.toString() + "]");
 
-        return isUserExist(username, password) ? "USER EXISTS" : "USER DOESN'T EXIST!";
+        return result;
     }
 
     private boolean isUserExist(String username, String passwordHash) {
-        User user = mService.findUserByUsername(username);
+        User user = mService.findUser(username);
         if (user != null) {
+            LOG.info("[INFO] ---> [" + "User exists." + "]");
             return true;
         } else {
+            LOG.info("[INFO] ---> [" + "User absents!" + "]");
             return false;
         }
     }

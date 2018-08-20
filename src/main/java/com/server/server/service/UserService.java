@@ -7,11 +7,7 @@ import com.server.server.entity.User;
  */
 public interface UserService {
 
-    User createUser(User user);
+    void createUser(User user);
 
-    User findUserByUsername(String username);
-
-    User findUserByPasswordHash(String passwordHash);
-
-//    boolean findAllByUsernamePassword(String username, String passwordHash);
+    User findUser(String username);
 }
