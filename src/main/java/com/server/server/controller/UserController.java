@@ -4,8 +4,7 @@ import com.server.server.entity.Login;
 import com.server.server.entity.User;
 import com.server.server.service.UserService;
 import com.server.server.utils.HashMD5;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.server.server.utils.LoggerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +23,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping("/login")
 public class UserController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ReminderController.class);
+    private static final LoggerUtils LOG = new LoggerUtils(UserController.class);
+    private String mResult = "false";
 
     @Autowired
     private UserService mService;
@@ -32,7 +32,6 @@ public class UserController {
     @RequestMapping(value = "/create-user", method = POST)
     @ResponseBody
     public String createUser(@RequestBody Login login) {
-        String result = "false";
         String username = login.getUsername();
         String password = login.getPassword();
         User newUser = new User();
@@ -41,29 +40,39 @@ public class UserController {
         try {
             //TODO: implement check login user by username, password
 
-//            if (isUserExist(username, password)) {
+            if (!isUserExist(username)) {
                 salt = HashMD5.getSalt();
                 newUser.setUsername(username);
                 newUser.setUserSalt(String.valueOf(salt));
                 newUser.setPasswordHash(HashMD5.getSecurePassword(password, salt));
                 mService.createUser(newUser);
-//            }
+            }
         } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
-            LOG.error("[ERROR] ---> [" + e.getMessage() + "]");
+            LOG.error(e.getMessage());
         }
-        LOG.info("[INFO] ---> [" + login.toString() + "]");
-        LOG.info("[INFO] ---> [create new user: " + newUser.toString() + "]");
+        LOG.info(login.toString());
+        LOG.info("create new user: " + newUser.toString());
 
-        return result;
+        return mResult;
     }
 
-    private boolean isUserExist(String username, String passwordHash) {
-        User user = mService.findUser(username);
+    private boolean isUserExist(String username) {
+
+        User user = mService.findUserByName(username);
         if (user != null) {
-            LOG.info("[INFO] ---> [" + "User exists." + "]");
-            return true;
+            User salt = mService.findUserSalt(user.getUserSalt());
+            if (salt != null && user.getUserSalt().equalsIgnoreCase(salt.getUserSalt())) {
+                LOG.info("User exists.");
+                mResult = "true";
+                return true;
+            } else {
+                LOG.info("User salt doesn't match!");
+                mResult = "false";
+                return false;
+            }
         } else {
-            LOG.info("[INFO] ---> [" + "User absents!" + "]");
+            LOG.info("User absents!");
+            mResult = "false";
             return false;
         }
     }

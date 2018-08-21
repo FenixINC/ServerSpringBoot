@@ -9,5 +9,7 @@ public interface UserService {
 
     void createUser(User user);
 
-    User findUser(String username);
+    User findUserByName(String username);
+
+    User findUserSalt(String userSalt);
 }
