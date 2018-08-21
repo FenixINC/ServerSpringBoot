@@ -19,7 +19,7 @@ public class ReminderServiceImpl implements ReminderService {
 
     @Override
     public List<Remind> getListByType(String typeRemind) {
-        return repository.getAllByTypeRemind(typeRemind);
+        return repository.getAllByType(typeRemind);
     }
 
     public Remind getByID(long id) {
