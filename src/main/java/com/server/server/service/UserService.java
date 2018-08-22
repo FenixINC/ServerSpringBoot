@@ -11,5 +11,7 @@ public interface UserService {
 
     User findUserByName(String username);
 
-    User findUserSalt(String userSalt);
+    String findUserSalt(String userSalt);
+
+    String findUserPasswordHash(String passwordHash);
 }

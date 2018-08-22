@@ -16,7 +16,7 @@ public class HashMD5 {
             // Create MessageDigest instance for MD5
             MessageDigest md = MessageDigest.getInstance("MD5");
             //Add password bytes to digest
-            md.update(salt);
+//            md.update(salt);
             //Get the hash's bytes
             byte[] bytes = md.digest(passwordToHash.getBytes());
             //This bytes[] has bytes in decimal format;

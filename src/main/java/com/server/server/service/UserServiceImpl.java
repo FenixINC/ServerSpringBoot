@@ -25,7 +25,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserSalt(String userSalt) {
+    public String findUserSalt(String userSalt) {
         return repository.findUserSalt(userSalt);
+    }
+
+    @Override
+    public String findUserPasswordHash(String passwordHash) {
+        return repository.findUserPasswordHash(passwordHash);
     }
 }
