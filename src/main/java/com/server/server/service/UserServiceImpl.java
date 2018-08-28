@@ -35,8 +35,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void userResetPassword(User oldUser, User newUser) {
-        repository.delete(oldUser);
-        repository.saveAndFlush(newUser);
+    public void updateUserPasswordHash(long id, String passwordHash) {
+        repository.updateUserPasswordHash(id, passwordHash);
     }
 }

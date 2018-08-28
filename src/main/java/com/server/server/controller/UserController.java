@@ -85,7 +85,7 @@ public class UserController {
                 mResponse = ResponseEntity.status(HttpStatus.NOT_FOUND).body(mResult);
                 return true;
             } else if (HashMD5.getSecurePassword(password, null).equalsIgnoreCase(user.getPasswordHash())) {
-                LOG.info("Success response login.");
+                LOG.info("Success response login. " + user.toString());
                 mResult = "Success response login.";
                 mResponse = ResponseEntity.status(HttpStatus.OK).body(mResult);
                 return true;
@@ -109,20 +109,13 @@ public class UserController {
     }
 
     private void resetPassword(String username, String password) {
-        User oldUser = mService.findUserByName(username);
-        User newUser = new User();
-        byte[] salt;
-        if (oldUser != null) {
-            try {
-                salt = HashMD5.getSalt();
-                newUser.setUsername(username);
-                newUser.setUserSalt(String.valueOf(salt));
-                newUser.setPasswordHash(HashMD5.getSecurePassword(password, salt));
-                mService.userResetPassword(oldUser, newUser);
-                LOG.info("Created new password(hash): " + newUser.getPasswordHash() + ", for user: " + newUser.getUsername());
-            } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
-                LOG.error(e.getMessage());
-            }
+        User user = mService.findUserByName(username);
+        if (user != null) {
+            user.setPasswordHash(HashMD5.getSecurePassword(password, user.getUserSalt().getBytes()));
+            mService.updateUserPasswordHash(user.getId(), user.getPasswordHash());
+            mResult = "Successful creating new password.";
+            mResponse = ResponseEntity.status(HttpStatus.OK).body(mResult);
+            LOG.info("Created new password: " + password + ", passwordHash: " + user.getPasswordHash() + ", for user: " + user.getUsername());
         } else {
             LOG.info("User absent and == NULL");
             mResult = "User absent and == NULL";

@@ -15,5 +15,5 @@ public interface UserService {
 
     String findUserPasswordHash(String passwordHash);
 
-    void userResetPassword(User oldUser, User newUser);
+    void updateUserPasswordHash(long id, String passwordHash);
 }
