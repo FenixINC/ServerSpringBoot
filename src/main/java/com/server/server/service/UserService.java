@@ -14,4 +14,6 @@ public interface UserService {
     String findUserSalt(String userSalt);
 
     String findUserPasswordHash(String passwordHash);
+
+    void userResetPassword(User oldUser, User newUser);
 }

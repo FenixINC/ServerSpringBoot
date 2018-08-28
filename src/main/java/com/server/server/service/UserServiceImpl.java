@@ -33,4 +33,10 @@ public class UserServiceImpl implements UserService {
     public String findUserPasswordHash(String passwordHash) {
         return repository.findUserPasswordHash(passwordHash);
     }
+
+    @Override
+    public void userResetPassword(User oldUser, User newUser) {
+        repository.delete(oldUser);
+        repository.saveAndFlush(newUser);
+    }
 }

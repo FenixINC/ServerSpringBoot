@@ -35,7 +35,7 @@ public class UserController {
 
     @RequestMapping(value = "/create", method = POST)
     @ResponseBody
-    public ResponseEntity createUser(@RequestBody Login login) {
+    public ResponseEntity userCreate(@RequestBody Login login) {
         String username = login.getUsername();
         String password = login.getPassword();
         User newUser = new User();
@@ -62,9 +62,18 @@ public class UserController {
 
     @RequestMapping(value = "/login", method = POST)
     @ResponseBody
-    public ResponseEntity login(@RequestBody Login login) {
+    public ResponseEntity userLogin(@RequestBody Login login) {
         isUserExist(login.getUsername(), login.getPassword(), false);
-        return mResponse != null ? mResponse : ResponseEntity.status(HttpStatus.OK).body(mResult);
+        LOG.info("--------------");
+        return mResponse != null ? mResponse : ResponseEntity.status(HttpStatus.NOT_FOUND).body(mResult);
+    }
+
+    @RequestMapping(value = "/reset", method = POST)
+    @ResponseBody
+    public ResponseEntity userResetPassword(@RequestBody Login login) {
+        resetPassword(login.getUsername(), login.getPassword());
+        LOG.info("--------------");
+        return mResponse != null ? mResponse : ResponseEntity.status(HttpStatus.NOT_FOUND).body(mResult);
     }
 
     private boolean isUserExist(String username, String password, boolean isCreateNewUser) {
@@ -73,7 +82,7 @@ public class UserController {
             if (isCreateNewUser) {
                 LOG.info("Cannot create user. This user " + username + " is already exists!");
                 mResult = "Cannot create user. This user " + "<b>" + username + "</b>" + " is already exists!";
-                mResponse = ResponseEntity.status(HttpStatus.OK).body(mResult);
+                mResponse = ResponseEntity.status(HttpStatus.NOT_FOUND).body(mResult);
                 return true;
             } else if (HashMD5.getSecurePassword(password, null).equalsIgnoreCase(user.getPasswordHash())) {
                 LOG.info("Success response login.");
@@ -89,13 +98,35 @@ public class UserController {
         } else if (user == null && isCreateNewUser) {
             LOG.info("Successful response creating new user.");
             mResult = "Successful response creating new user.";
-            mResponse = ResponseEntity.status(HttpStatus.NOT_FOUND).body(mResult);
+            mResponse = ResponseEntity.status(HttpStatus.OK).body(mResult);
             return false;
         } else {
             LOG.info("User absent and == NULL");
             mResult = "User absent and == NULL";
             mResponse = ResponseEntity.status(HttpStatus.NOT_FOUND).body(mResult);
             return false;
+        }
+    }
+
+    private void resetPassword(String username, String password) {
+        User oldUser = mService.findUserByName(username);
+        User newUser = new User();
+        byte[] salt;
+        if (oldUser != null) {
+            try {
+                salt = HashMD5.getSalt();
+                newUser.setUsername(username);
+                newUser.setUserSalt(String.valueOf(salt));
+                newUser.setPasswordHash(HashMD5.getSecurePassword(password, salt));
+                mService.userResetPassword(oldUser, newUser);
+                LOG.info("Created new password(hash): " + newUser.getPasswordHash() + ", for user: " + newUser.getUsername());
+            } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
+                LOG.error(e.getMessage());
+            }
+        } else {
+            LOG.info("User absent and == NULL");
+            mResult = "User absent and == NULL";
+            mResponse = ResponseEntity.status(HttpStatus.NOT_FOUND).body(mResult);
         }
     }
 }
