@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class Remind {
 
     @Id
-    @GeneratedValue(generator = "increment")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id;
 

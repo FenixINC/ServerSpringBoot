@@ -33,4 +33,9 @@ public class ReminderServiceImpl implements ReminderService {
     public void delete(long id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public Remind isRemindExists(String title, String description) {
+        return repository.isRemindExists(title, description);
+    }
 }

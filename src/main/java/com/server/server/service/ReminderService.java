@@ -15,4 +15,6 @@ public interface ReminderService {
     Remind create(Remind remind);
 
     void delete(long id);
+
+    Remind isRemindExists(String title, String description);
 }
