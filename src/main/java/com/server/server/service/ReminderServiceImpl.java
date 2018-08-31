@@ -30,8 +30,8 @@ public class ReminderServiceImpl implements ReminderService {
         return repository.saveAndFlush(remind);
     }
 
-    public void delete(long id) {
-        repository.deleteById(id);
+    public void delete(Remind remind) {
+        repository.delete(remind);
     }
 
     @Override

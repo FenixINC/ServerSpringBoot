@@ -50,18 +50,19 @@ public class ReminderController {
         LOG.info("createReminder: " + remind.toString());
 //        Remind newRemind = mService.isRemindExists(remind.getTitle(), remind.getDescription());
 //        if (newRemind != null) {
-            mService.create(remind);
-            return mResponse = ResponseEntity.status(HttpStatus.OK).body("Successful create remind.");
+        mService.create(remind);
+        return mResponse = ResponseEntity.status(HttpStatus.OK).body("Successful create remind.");
 //        } else {
 //            return mResponse = ResponseEntity.status(HttpStatus.NOT_FOUND).body("This remind already exists!");
 //        }
     }
 
-    @RequestMapping(value = "/delete", params = "id", method = DELETE)
+    @RequestMapping(value = "/delete", method = POST)
     @ResponseBody
-    public void delete(@RequestParam(value = "id") long remindID) {
-        LOG.info("delete: id = " + remindID);
-        mService.delete(remindID);
+    public ResponseEntity delete(@RequestBody Remind remind) {
+        LOG.info("delete: " + remind.toString());
+        mService.delete(remind);
+        return mResponse = ResponseEntity.status(HttpStatus.ACCEPTED).body("Successful delete.");
     }
 
     // @PathVariable == @Path
